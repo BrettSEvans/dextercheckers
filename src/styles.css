@@ -1,0 +1,304 @@
+:root {
+    color-scheme: dark;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background:
+          radial-gradient(circle at top, rgba(255, 198, 92, 0.16), transparent 32%),
+          linear-gradient(180deg, #13233d 0%, #0e1320 60%, #090d16 100%);
+    color: #f6f1e8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+.game-shell {
+    display: grid;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #ffcf86;
+    font-size: 0.8rem;
+}
+
+h1,
+h2 {
+    margin: 0;
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    line-height: 0.95;
+    max-width: 10ch;
+}
+
+.status-card {
+    min-width: min(100%, 320px);
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(12px);
+}
+
+.status-label {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    color: #ffd9a3;
+}
+
+.status-value {
+    margin: 0.35rem 0 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.status-detail {
+    margin: 0.35rem 0 0;
+    color: rgba(246, 241, 232, 0.82);
+}
+
+.play-area {
+    display: grid;
+    grid-template-columns: minmax(320px, 1.1fr) minmax(280px, 0.9fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.board-shell {
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+.mode-toggle {
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.mode-button {
+    border: 0;
+    color: rgba(246, 241, 232, 0.86);
+    background: transparent;
+    border-radius: 999px;
+    padding: 0.6rem 0.9rem;
+    cursor: pointer;
+}
+
+.mode-button.active {
+    color: #0f1422;
+    background: linear-gradient(135deg, #ffd88f, #f2b45f);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    aspect-ratio: 1 / 1;
+    width: min(100%, 900px);
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.square {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border: 0;
+    padding: 0;
+    min-height: 0;
+}
+
+.square.light {
+    background: linear-gradient(135deg, #f0d8b3, #dec39c);
+}
+
+.square.dark {
+    background: linear-gradient(135deg, #8f4b2d, #5d311e);
+}
+
+.square.playable {
+    cursor: pointer;
+}
+
+.square.selected {
+    box-shadow: inset 0 0 0 4px rgba(255, 214, 120, 0.45);
+}
+
+.square.active-destination {
+    box-shadow: inset 0 0 0 4px #ffce78;
+}
+
+.square.destination::after {
+    content: '';
+    position: absolute;
+    width: 26%;
+    height: 26%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.piece {
+    position: relative;
+    z-index: 1;
+    width: 72%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1;
+    box-shadow:
+          inset 0 0 0 3px rgba(255, 255, 255, 0.24),
+          0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.piece.red {
+    background: radial-gradient(circle at 30% 30%, #ff8f8a, #c21f2d 72%);
+    color: #ffd9d5;
+}
+
+.piece.black {
+    background: radial-gradient(circle at 30% 30%, #595959, #171717 72%);
+    color: #f3f3f3;
+}
+
+.piece.king::before {
+    content: '*';
+    position: absolute;
+    transform: translateY(-0.9rem);
+    font-size: 0.72em;
+    color: #fff0c3;
+}
+
+.sidebar {
+    display: grid;
+    gap: 1rem;
+}
+
+.panel {
+    padding: 1rem 1.1rem;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.panel h2 {
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.panel ul,
+.history {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: rgba(246, 241, 232, 0.88);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.restart {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff5e2;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+}
+
+.hint {
+    position: absolute;
+    width: 12%;
+    height: 12%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 960px) {
+    .hero {
+          display: grid;
+    }
+
+  .play-area {
+        grid-template-columns: 1fr;
+        display: grid;
+  }
+
+  .hero {
+        align-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+    .game-shell {
+          padding: 1rem;
+    }
+
+  h1 {
+        font-size: 2.4rem;
+  }
+
+  .status-card {
+        min-width: 0;
+  }
+
+  .board-shell {
+        padding: 0.65rem;
+  }
+
+  .mode-toggle {
+        width: 100%;
+  }
+
+  .mode-button {
+        flex: 1;
+  }
+}
